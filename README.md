@@ -1,6 +1,6 @@
 # full-view-snap-react
 
-A React component library for vertical scroll snapping with integrated navigation and reusable UI components.
+A React component library for viewport level vertical scroll snapping with integrated navigation and reusable UI components.
 
 ## Live Demo
 
