@@ -1,0 +1,34 @@
+{
+  "name": "full-view-snap-react",
+  "version": "1.0.0",
+  "description": "A React component for vertical scroll snapping with integrated navigation.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && npm run copy-css",
+    "copy-css": "cp src/index.css dist/index.css",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "react",
+    "components"
+  ],
+  "author": "Websultancy",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "dependencies": {
+    "@juggle/resize-observer": "3.4.0",
+    "@react-hook/resize-observer": "^2.0.2",
+    "@types/react": "^19.1.8",
+    "react-responsive": "^10.0.1",
+    "react-router-dom": "^7.7.0",
+    "react-usestateref": "^1.0.9",
+    "typescript": "^4.9.5"
+  },
+  "files": [
+    "dist"
+  ]
+}

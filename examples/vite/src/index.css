@@ -1,0 +1,138 @@
+:root {
+  --logo-color: #fff;
+  --link-rgb: 0, 253, 101;
+  --link-hover-rgb: 140, 255, 186;
+
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --logo-color: #000;
+    --link-rgb: 66, 119, 53;
+    --link-hover-rgb: 44, 80, 35;
+
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: rgb(var(--link-hover-rgb));
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+
+body {
+  margin: 0;
+}
+
+a {
+  font-weight: 500;
+  color: rgb(var(--link-rgb));
+  text-decoration: inherit;
+}
+a:hover {
+  color: rgb(var(--link-hover-rgb));
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* class that wraps the content for each full view to add a thick border box */
+.full-view-wrapper {
+  /* Factor the border into the height and width */
+  height: calc(100% - 2px);
+  width: calc(100% - 2px);
+  border: 1px solid #646cff;
+  overflow: hidden;
+}
+
+/* Define a fixed class thats 100lvh (fallbacks to 100vh)  that contains stats that are cebtered horizontally and vertically */
+.full-view-stats {
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 1.5em;
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none; /* Prevents the stats from capturing pointer events */
+}
+
+.top-central{
+  position: absolute;
+  top: 20svh;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.central-central{
+  position: absolute;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Define a fixed class thats 100lvh (fallbacks to 100vh)  that contains stats that are cebtered horizontally and vertically */
+.full-view-animation {
+  position: fixed;
+  pointer-events: none; /* Prevents the animation from capturing pointer events */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100lvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 1.5em;
+  font-weight: 500;
+  text-align: center;
+  z-index: 1000;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: rgb(var(--link-rgb), 0.15);
+  color: rgb(var(--link-rgb));
+  border-color: rgb(var(--link-rgb));
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: rgb(var(--link-hover-rgb));
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto rgb(var(--link-hover-rgb), 0.5);
+}

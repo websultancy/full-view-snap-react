@@ -1,0 +1,68 @@
+/* FVS- prefixed Tailwind utility classes */
+.FVS-overflow-x-hidden {
+  overflow-x: hidden;
+}
+.FVS-overflow-y-scroll {
+  overflow-y: scroll;
+}
+.FVS-h-\[100dvh\] {
+  height: 100dvh;
+}
+.FVS-snap-y {
+  scroll-snap-type: y mandatory;
+}
+.FVS-snap-mandatory {
+  scroll-snap-type: y mandatory;
+}
+.FVS-w-screen {
+  width: 100vw;
+}
+.FVS-relative {
+  position: relative;
+}
+.FVS-w-\[100\%\] {
+  width: 100% !important;
+}
+.FVS-h-\[100svh\] {
+  height: 100svh !important;
+}
+.FVS-snap-start {
+  scroll-snap-align: start !important;
+}
+.FVS-snap-end {
+  scroll-snap-align: end !important;
+}
+.FVS-h-\[100lvh\] {
+  height: 100lvh !important;
+}
+.FVS-absolute {
+  position: absolute !important;
+}
+.FVS-top-0 {
+  top: 0 !important;
+}
+.FVS-left-0 {
+  left: 0 !important;
+}
+.FVS-pointer-events-none {
+  pointer-events: none !important;
+}
+.FVS-z-\[-1\] {
+  z-index: -1 !important;
+}
+.FVS-h-\[10vh\] {
+  height: 10vh !important;
+}
+.FVS-snap-none {
+  scroll-snap-align: none !important;
+}
+.FVS-w-full {
+  width: 100% !important;
+}
+.FVS-no-scrollbar {
+  scrollbar-width: none !important;        /* Firefox */
+  -ms-overflow-style: none !important;     /* IE and Edge */
+}
+.FVS-no-scrollbar::-webkit-scrollbar {
+  display: none !important;                /* Chrome, Safari, Opera */
+}

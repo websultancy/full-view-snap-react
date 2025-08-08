@@ -1,0 +1,35 @@
+ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+.central-central svg path {
+  fill: var(--logo-color) !important;
+}
+
+.built-by-footer {
+  position: fixed;
+  right: 24px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  z-index: 2000;
+  color: rgb(var(--link-rgb));
+  background: rgba(0,0,0,0.02);
+  padding: 4px 10px;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.websultancy-logo {
+  width: 80px;
+  height: auto;
+  margin-left: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.built-by-footer .websultancy-logo path {
+  fill: rgb(var(--link-rgb)) !important;
+}

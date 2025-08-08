@@ -1,0 +1,79 @@
+.full-view-stats {
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;         /* Allow wrapping */
+  gap: 1rem;
+  width: 100%;
+  margin-right: 20px;
+  justify-content: center;
+  align-items: stretch;
+  margin-bottom: 1rem;
+  margin-top: auto; /* Add top margin for screens under 1280px */
+  font-size: 16px; /* Adjust font size for better fit */
+}
+
+/* This is the wrapper for the content */
+.full-view-wrapper-content {
+  flex-direction: column;
+  height: calc(100% - 2px);
+  width: calc(100% - 2px);
+  border: 1px solid #646cff;
+  font-size: 24px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p{
+    padding: 0 30px;
+    text-align: center; /* Center text for better readability */
+  }
+}
+    
+.full-view-stat-container {
+  color: white  ;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 1 auto;      /* Allow shrinking, do not force to fill */
+  min-width: 160px;    /* Optional: set a sensible min width */
+  background: #000000;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+@media (max-width: 700px) {
+  .full-view-stat-container {
+    flex-direction: row;
+    text-align: right;
+    min-width: auto;
+  }
+}
+
+.full-view-stat-title {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+
+.full-view-stat-value {
+  /* Add any additional styling for the value here */
+}
+
+@media (max-width: 1279px) {
+  .full-view-stats {
+    width: calc(100% - 210px); /* Adjust width for smaller screens */
+    align-items: start; /* Align items to the start */
+    justify-content: right;
+  }
+}
+@media (max-width: 700px) {
+  .full-view-stats {
+    font-size: 14px;
+    gap:0;
+  }
+  .full-view-stat-title {
+    font-weight: bold;
+    margin-bottom: auto;
+    margin-right: 7px;
+  }
+}
