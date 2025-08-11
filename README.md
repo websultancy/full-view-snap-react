@@ -56,7 +56,6 @@ const App = () => (
       contentScrollPercentage
     ) => (
       <>
-        {/* End fixed item */}
         <Controller>
           <FullView>
             <h1>view 1</h1>
