@@ -2,15 +2,21 @@
 
 A React component library for viewport level vertical scroll snapping with integrated navigation and reusable UI components.
 
-## Live Demo
-
-You can view a live demo [here](https://dgan8ja2q09by.cloudfront.net/vite).
-
 ## Why full-view-snap-react?
 
 Unlike many JavaScript-based scroll snap plugins that attempt to recreate or unify scrolling behavior, **full-view-snap-react** is an optimized, cross-platform tested wrapper that leverages native CSS scroll snapping. This approach allows modern browsers (especially through touch gestures) to deliver the smoothest and most performant scrolling experience possible.
 
+This react library aims to take the burdon away from the developr and checks for browser suppport / features to help deliver the best native scroll snapping experience possible.
+
 Many other plugins restrict users to navigating one section at a time, which can feel cumbersome and unnatural. Some try to recreate momentum scrolling but struggle to get snap points right. Native scroll snapping, as used in this package, excels at handling momentum and snap points across all browsers, letting users scroll naturally and efficiently.
+
+## Live Demo
+
+You can view a live demo [here](https://dgan8ja2q09by.cloudfront.net/vite).
+
+## Example
+
+[`examples/vite/src`](./examples/vite/src) for live code examples.
 
 ## Installation
 
@@ -29,7 +35,6 @@ npm install full-view-snap-react
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome iOS" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome iOS | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox iOS" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox iOS | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome Android" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome Android | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox Android" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox Android |  |  |
 | 132+ (IOS 16+) | 141+ (IOS 16+) | 128+ (Android 10+) | v140+ (Android 9+) |  |  |
 <!-- /github_only -->
-
 
 
 ## Usage
@@ -79,10 +84,10 @@ const root = ReactDOM.createRoot(document.body);
 root.render(<App />);
 ```
 
-> **Note:**  
-> To see more features and uses, please refer to our [live demo](https://dgan8ja2q09by.cloudfront.net/vite).
+> **Limitation:**  
+> This component library is intended for use on the root viewport and requires the ReactDOM root to be document.body
 >
-> You can also review the code in [`examples/vite/src`](./examples/vite/src) for more implementation details.
+>The FullViewSnap component should be rendered as direct child of Body
 
 ## License
 

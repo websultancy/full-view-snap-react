@@ -25,7 +25,7 @@
     "react-dom": "^19.1.0"
   },
   "dependencies": {
-    "@juggle/resize-observer": "3.4.0",
+    "@juggle/resize-observer": "3.4.0", 
     "@react-hook/resize-observer": "^2.0.2",
     "@types/react": "^19.1.8",
     "react-responsive": "^10.0.1",
