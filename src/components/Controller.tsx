@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useContext, useEffect } from "react";
 import RootScrollerContext from "./RootScrollerContext";
 import { FullViewSnapContext } from "./FullViewSnap";

@@ -1,3 +1,4 @@
+"use client";
 import React, { forwardRef, useEffect } from 'react';
 import RootScrollerContext from './RootScrollerContext';
 

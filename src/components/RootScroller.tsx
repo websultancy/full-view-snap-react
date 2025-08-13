@@ -70,9 +70,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children }) => {
   }, []);
 
   const scrollToView = useCallback((index:number, speed:number = 0) => {
-    console.log("scrollToView within RootScroller! called with index:", index, "speed:", speed);
     suspendScrollSnap(); //
-    console.log(rootScrollerRef , rootScrollerRef?.current , slideRefsRef.current.length);
     if (rootScrollerRef && rootScrollerRef?.current && slideRefsRef.current.length > 0) {
       const scroller = rootScrollerRef.current === document.documentElement ? window : rootScrollerRef.current;
       const slideTopPosition = slideRefsRef.current[index]?.current?.offsetTop || 0;
@@ -142,7 +140,6 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children }) => {
 
   // Update contextStateProps.rootScrollerContext from within RootScroller
   useEffect(() => {
-    console.log("Updating RootScrollerContext with new values");
     updateContextState({
       ...contextState,
       rootScrollerContext: {

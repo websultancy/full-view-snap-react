@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +12,33 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+function BackButton() {
+  return (
+    <Link
+      href="/"
+      style={{
+        position: 'fixed',
+        top: 16,
+        left: 16,
+        height: '40px',
+        padding: '8px 16px',
+        fontSize: '16px',
+        borderRadius: '4px',
+        border: 'none',
+        background: '#222',
+        color: '#fff',
+        cursor: 'pointer',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textDecoration: 'none'
+      }}
+    >
+      ← More Examples
+    </Link>
+  );
+}
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,6 +56,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <BackButton />
       </body>
     </html>
   );

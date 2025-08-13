@@ -1,6 +1,12 @@
+"use client";
 import * as React from 'react'
 import useResizeObserver from '@react-hook/resize-observer'
 import {ResizeObserver} from '@juggle/resize-observer'
+
+// Safe wrapper for SSR
+const useSafeResizeObserver = typeof window !== "undefined"
+  ? useResizeObserver
+  : () => {};
 
 
 export const useSize = (target:React.MutableRefObject<HTMLElement | null>) => {
@@ -15,7 +21,8 @@ export const useSize = (target:React.MutableRefObject<HTMLElement | null>) => {
             setSize(target.current.getBoundingClientRect())
     }, [target])
 
-    useResizeObserver(target, (entry:any) => setSize(entry.contentRect))
+    useSafeResizeObserver(target, (entry: any) => setSize(entry.contentRect))
+    
     return size
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "full-view-snap-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A React component for viewport vertical scroll snapping with integrated navigation.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
-import FullViewSnapLogo from "./fullviewsnaplogo.svg";
+import FullViewSnapLogo from "../assets/fullviewsnaplogo.svg";
 
 export default function Home() {
+  
   return (
     <div className="">
       <div className='central-central'>

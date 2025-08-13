@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import RootScroller from "./RootScroller";
 import RootScrollerContext from "./RootScrollerContext";
@@ -50,10 +51,6 @@ const FullViewSnap: React.FC<FullViewSnapProps> = ({
 
   // Bring in the rootscroller ref from the RootScrollerContext
   const rootScrollerContext = React.useContext(RootScrollerContext)
-
-  useEffect(() => {
-    console.log("SCROLL CONTEXT UPDATE", rootScrollerContext);
-  }, [rootScrollerContext]);
 
   const [contextState, setContextState] = React.useState<contextStateProps>({
     currentIndex: 0,
