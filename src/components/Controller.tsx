@@ -114,7 +114,7 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
 
     // Create a ref array for FullView children
   const fullViewRefs = React.useRef<
-    Array<React.RefObject<HTMLDivElement | null>>
+    Array<React.RefObject<HTMLDivElement>>
   >([]);
   if (fullViewRefs.current.length === 0) {
     // Initialize or reset refs if children count changes
@@ -129,10 +129,10 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
       React.isValidElement(child) &&
       (child as any).type.displayName === "FullView"
     ) {
-      // Cast to any to allow ref prop, assuming FullView is forwardRef-compatible
+      // Instead of touching element.ref (React 19), pass controller's ref via an explicit prop
       return React.cloneElement(child as React.ReactElement<any>, {
         key: child.key ?? idx,
-        ref: fullViewRefs.current[idx],
+        internalRef: fullViewRefs.current[idx],
       });
     }
     return child;

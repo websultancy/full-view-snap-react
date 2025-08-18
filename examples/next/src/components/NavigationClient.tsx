@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { FullViewSnap, FullView, Controller } from "full-view-snap-react";
 

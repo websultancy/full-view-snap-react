@@ -1,6 +1,6 @@
 {
   "name": "full-view-snap-react",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A React component for viewport vertical scroll snapping with integrated navigation.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   },
   "homepage": "https://github.com/websultancy/full-view-snap-react#readme",
   "scripts": {
-    "build": "tsc && npm run copy-css",
+    "build": "tsup && npm run copy-css",
     "copy-css": "cp src/index.css dist/index.css",
     "test": "echo \"No tests specified\" && exit 0"
   },
@@ -21,18 +21,24 @@
   "author": "Websultancy",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@juggle/resize-observer": "3.4.0", 
+    "@juggle/resize-observer": "3.4.0",
     "@react-hook/resize-observer": "^2.0.2",
-    "@types/react": "^19.1.8",
-    "react-responsive": "^10.0.1",
-    "react-router-dom": "^7.7.0",
-    "react-usestateref": "^1.0.9",
-    "typescript": "^4.9.5"
+    "react-usestateref": "^1.0.9"
   },
+  "devDependencies": {
+    "typescript": "4.9.5",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.14",
+    "tsup": "^8.3.5"
+  },
+  "bundledDependencies": [
+    "@react-hook/resize-observer",
+    "@juggle/resize-observer"
+  ],
   "files": [
     "dist"
   ]

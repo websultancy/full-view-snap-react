@@ -17,6 +17,7 @@ You can view a live demo [here](https://dgan8ja2q09by.cloudfront.net/vite).
 ## Example
 
 [`examples/vite/src`](./examples/vite/src) for live code examples.
+[`examples/next/src`](./examples/next/src) for live code examples.
 
 ## Installation
 
@@ -45,8 +46,16 @@ npm install full-view-snap-react
 
 #### Props
 
-- `children`: React nodes to be rendered as snap sections.
-- Additional props as documented in the source.
+- `children` (optional): React nodes to be rendered as snap sections.
+- `hideScrollBars` (optional): A boolean that determines whether to hide scroll bars
+  - `true`: Scroll bars will be hidden
+  - `false` (default): Scroll bars will be visible
+- `render`: A function that receives the current view state and returns React nodes to be rendered as snap sections.
+  - `currentView`: The current view index (0-based)
+  - `totalViews`: The total number of views
+  - `scrollPercentage`: The current scroll percentage including overscroll spacing
+  - `contentScrollPercentage`: The content scroll percentage
+  - `rootScrollerContext`: Context object with scroll control methods
 
 #### Example
 
@@ -57,6 +66,7 @@ import { FullViewSnap, Controller, FullView } from 'full-view-snap-react';
 
 const App = () => (
   <FullViewSnap
+    hideScrollBars={true} // Optional: hide scroll bars
     render={(
       currentView,
       totalViews,
@@ -83,6 +93,117 @@ const App = () => (
 const root = ReactDOM.createRoot(document.body);
 root.render(<App />);
 ```
+
+#### Hide Scroll Bars Feature
+
+The `hideScrollBars` prop allows you to hide scroll bars while maintaining full scroll functionality. When enabled, it applies cross-browser CSS that hides scroll bars:
+
+- **Firefox**: Uses `scrollbar-width: none`
+- **IE and Edge**: Uses `-ms-overflow-style: none`
+- **Chrome, Safari, Opera**: Uses `::-webkit-scrollbar { display: none }`
+
+This works with both fixed viewport and document element scrolling modes.
+
+### FullViewSnapContext
+
+The `FullViewSnapContext` provides access to the current scroll state and allows you to update it programmatically.
+
+#### Context Value
+
+```typescript
+interface FullViewSnapContextProps {
+  contextState: {
+    currentIndex: number;                    // Current view index (0-based)
+    currentScrollPercentage: number;         // Current scroll percentage
+    totalViews: number;                      // Total number of views
+    currentContentScrollPercentage: number;  // Content scroll percentage
+    rootScrollerContext: RootScrollerContextProps; // Access to scroll control methods
+    edgeSpacerRef?: React.RefObject<HTMLDivElement | null>; // Edge spacer reference
+  };
+  updateContextState: (newState: contextStateProps) => void; // Function to update context state
+}
+```
+
+#### Usage Example
+
+```javascript
+import { FullViewSnapContext } from 'full-view-snap-react';
+import { useContext } from 'react';
+
+function MyComponent() {
+  const { contextState, updateContextState } = useContext(FullViewSnapContext);
+  
+  console.log('Current view:', contextState.currentIndex);
+  console.log('Total views:', contextState.totalViews);
+  console.log('Scroll percentage:', contextState.currentScrollPercentage);
+  
+  return (
+    <div>
+      <p>Current View: {contextState.currentIndex + 1} of {contextState.totalViews}</p>
+    </div>
+  );
+}
+```
+
+### RootScrollerContext
+
+The `RootScrollerContext` provides low-level access to scroll control methods and references.
+
+#### Context Value
+
+```typescript
+interface RootScrollerContextProps {
+  rootScrollerRef: MutableRefObject<HTMLDivElement | HTMLElement> | null; // Reference to the scroll container
+  isFixedViewport: boolean | null; // Whether using fixed viewport mode
+  scrollToView?: (index: number, speed?: number) => void; // Scroll to specific view
+  slideRefs?: React.MutableRefObject<HTMLDivElement[]>[]; // Array of slide references
+  setSlideRefs: React.Dispatch<React.SetStateAction<React.RefObject<HTMLDivElement | null>[]>>; // Set slide references
+  suspendScrollSnap?: (duration?: number) => void; // Temporarily disable scroll snapping
+  instateScrollSnap?: () => void; // Re-enable scroll snapping
+}
+```
+
+#### Usage Example
+
+```javascript
+import { RootScrollerContext } from 'full-view-snap-react';
+import { useContext } from 'react';
+
+function NavigationComponent() {
+  const { scrollToView, suspendScrollSnap, instateScrollSnap } = useContext(RootScrollerContext);
+  
+  const handleJumpToView = (index) => {
+    // Suspend scroll snapping temporarily
+    suspendScrollSnap(1000);
+    
+    // Scroll to specific view
+    scrollToView(index, 0); // 0 = instant jump, other values = smooth scroll
+    
+    // Re-enable scroll snapping after 1 second
+    setTimeout(() => {
+      instateScrollSnap();
+    }, 1000);
+  };
+  
+  return (
+    <div>
+      <button onClick={() => handleJumpToView(0)}>Go to First View</button>
+      <button onClick={() => handleJumpToView(2)}>Go to Third View</button>
+    </div>
+  );
+}
+```
+
+#### Scroll Control Methods
+
+- **`scrollToView(index, speed)`**: Scroll to a specific view
+  - `index`: View index to scroll to (0-based)
+  - `speed`: Scroll speed in milliseconds (0 = instant, >0 = smooth scroll)
+
+- **`suspendScrollSnap(duration)`**: Temporarily disable scroll snapping
+  - `duration`: Duration in milliseconds to suspend snapping (default: 1400ms)
+
+- **`instateScrollSnap()`**: Re-enable scroll snapping immediately
 
 > **Limitation:**  
 > This component library is intended for use on the root viewport and requires the ReactDOM root to be document.body

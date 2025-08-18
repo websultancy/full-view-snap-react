@@ -4,6 +4,7 @@ import "./Basic.css";
 function Basic() {
   return (
     <FullViewSnap
+      hideScrollBars={true}
       render={(
         currentView,
         totalViews,

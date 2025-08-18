@@ -22,13 +22,14 @@ interface FullViewSnapContextProps {
 
 interface FullViewSnapProps {
   children?: ReactNode;
+  hideScrollBars?: boolean;
   render: (
     currentView: number,
     totalViews: number,
     scrollPercentage: number,
     contentScrollPercentage: number,
     rootScrollerContext: RootScrollerContextProps,
-  ) => ReactElement;
+  ) => ReactNode;
 }
 
 //Declare and export a context for the current index
@@ -47,6 +48,7 @@ export const FullViewSnapContext =
 
 const FullViewSnap: React.FC<FullViewSnapProps> = ({
   render,
+  hideScrollBars = false,
 }) => {
 
   // Bring in the rootscroller ref from the RootScrollerContext
@@ -72,7 +74,7 @@ const FullViewSnap: React.FC<FullViewSnapProps> = ({
     <FullViewSnapContext.Provider
       value={{ contextState, updateContextState }}
     >
-      <RootScroller>
+      <RootScroller hideScrollBars={hideScrollBars}>
           {render(
             contextState.currentIndex,
             contextState.totalViews,

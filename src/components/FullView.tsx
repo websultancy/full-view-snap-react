@@ -5,9 +5,11 @@ import RootScrollerContext from './RootScrollerContext';
 interface FullViewProps {
     children?: React.ReactNode;
     isLast?: boolean;
+    // Internal, used by Controller to collect slide refs without touching element.ref in React 19
+    internalRef?: React.Ref<HTMLDivElement>;
 }
 
-const FullView = forwardRef<HTMLDivElement, FullViewProps>(({ children, isLast = false }, ref) => {
+const FullView = forwardRef<HTMLDivElement, FullViewProps>(({ children, isLast = false, internalRef }, ref) => {
     // Get the root scroll context and obtain the isFixedViewport property
     const rootScroller = React.useContext(RootScrollerContext);
     const isFixedViewport = rootScroller.isFixedViewport;
@@ -38,6 +40,22 @@ const FullView = forwardRef<HTMLDivElement, FullViewProps>(({ children, isLast =
         }
     }, [containerRef, rootScroller.rootScrollerRef]);
 
+    // Merge user ref with internal controller ref without reading element.ref
+    const mergeRefs = (...refs: Array<React.Ref<HTMLDivElement> | undefined>) => {
+        return (value: HTMLDivElement | null) => {
+            refs.forEach((r) => {
+                if (!r) return;
+                if (typeof r === 'function') {
+                    r(value);
+                } else {
+                    try {
+                        (r as React.MutableRefObject<HTMLDivElement | null>).current = value;
+                    } catch {}
+                }
+            });
+        };
+    };
+
     return (
         <div
             ref={containerRef}
@@ -45,7 +63,7 @@ const FullView = forwardRef<HTMLDivElement, FullViewProps>(({ children, isLast =
             style={{ marginBottom: 'calc(100lvh - 100svh)'}} // This is samsung internet specific fix,  for samsung internet lvh varies depending on the screen size and svh is consistent
         >
             <div
-                ref={ref}
+                ref={mergeRefs(ref, internalRef)}
                 style={{ position: 'absolute', overflow: 'hidden' }}
                 className={`${isFixedViewport ? 'FVS-h-[100dvh]' : 'FVS-h-[100lvh]'} FVS-w-full`}
             >
