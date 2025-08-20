@@ -104,7 +104,15 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
         setIsFixedViewport(false);
       }else{
         //The device doen't know the difference between lvh and svh, so we'll play it safe and set the viewport to fixed
-        setIsFixedViewport(true);
+        //All desktop browsers seem to work fine with a non-fixed viewport,  infact Safari on desktop seems to work better with a non-fixed viewport
+
+        //Detect if the browser has touch support
+        if(window.matchMedia("(pointer:coarse)").matches){
+          setIsFixedViewport(true);
+        }else{
+          setIsFixedViewport(false);
+        }
+
       }
 
     } else{
@@ -222,7 +230,6 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
               <div id={"FVS-fixed-viewport-wrapper"} className="FVS-relative">{children}</div>
             </div>
           </>
-
         ) : (
           <>{children}</> 
         )}

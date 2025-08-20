@@ -10,14 +10,26 @@ This react library aims to take the burdon away from the developr and checks for
 
 Many other plugins restrict users to navigating one section at a time, which can feel cumbersome and unnatural. Some try to recreate momentum scrolling but struggle to get snap points right. Native scroll snapping, as used in this package, excels at handling momentum and snap points across all browsers, letting users scroll naturally and efficiently.
 
+## How it works?
+
+The **full-view-snap-react** component intelligently adapts its rendering strategy based on device capabilities and browser support. Here's how it decides whether to wrap content in a div or render views at the root level:
+
+**CSS Unit Support Detection:**
+- `Measures 100lvh (large viewport height) vs 100svh (small viewport height)
+- `If these values differ, the device correctly supports modern CSS viewport units
+
+**Touch Device Detection::**
+- Uses window.matchMedia("(pointer:coarse)") to detect touch-capable devices
+- If there's no touch devices, we assume desktop and render on root level for best performance
+
 ## Live Demo
 
 You can view a live demo [here](https://dgan8ja2q09by.cloudfront.net/vite).
 
 ## Example
 
-[`examples/vite/src`](./examples/vite/src) for live code examples.
-[`examples/next/src`](./examples/next/src) for live code examples.
+[`examples/vite/src`](./examples/vite/src) for vite example implementation.
+[`examples/next/src`](./examples/next/src) for nextjs example implementation.
 
 ## Installation
 
@@ -94,19 +106,9 @@ const root = ReactDOM.createRoot(document.body);
 root.render(<App />);
 ```
 
-#### Hide Scroll Bars Feature
-
-The `hideScrollBars` prop allows you to hide scroll bars while maintaining full scroll functionality. When enabled, it applies cross-browser CSS that hides scroll bars:
-
-- **Firefox**: Uses `scrollbar-width: none`
-- **IE and Edge**: Uses `-ms-overflow-style: none`
-- **Chrome, Safari, Opera**: Uses `::-webkit-scrollbar { display: none }`
-
-This works with both fixed viewport and document element scrolling modes.
-
 ### FullViewSnapContext
 
-The `FullViewSnapContext` provides access to the current scroll state and allows you to update it programmatically.
+The `FullViewSnapContext` provides access to the current scroll state.
 
 #### Context Value
 
@@ -149,19 +151,32 @@ function MyComponent() {
 
 The `RootScrollerContext` provides low-level access to scroll control methods and references.
 
-#### Context Value
+#### Context Props
 
-```typescript
-interface RootScrollerContextProps {
-  rootScrollerRef: MutableRefObject<HTMLDivElement | HTMLElement> | null; // Reference to the scroll container
-  isFixedViewport: boolean | null; // Whether using fixed viewport mode
-  scrollToView?: (index: number, speed?: number) => void; // Scroll to specific view
-  slideRefs?: React.MutableRefObject<HTMLDivElement[]>[]; // Array of slide references
-  setSlideRefs: React.Dispatch<React.SetStateAction<React.RefObject<HTMLDivElement | null>[]>>; // Set slide references
-  suspendScrollSnap?: (duration?: number) => void; // Temporarily disable scroll snapping
-  instateScrollSnap?: () => void; // Re-enable scroll snapping
-}
-```
+- **`rootScrollerRef`**: Reference to the scroll container
+  - Type: `MutableRefObject<HTMLDivElement | HTMLElement> | null`
+  - Description: Direct reference to the scroll container element
+
+- **`isFixedViewport`**: Whether using fixed viewport mode
+  - Type: `boolean | null`
+  - Description: Indicates if the component is using a wrapper div or rendering at root level
+
+- **`scrollToView(index, speed)`**: Scroll to a specific view
+  - `index`: View index to scroll to (0-based)
+  - `speed`: Scroll speed in milliseconds (0 = instant, >0 = smooth scroll)
+
+- **`slideRefs`**: Array of slide references
+  - Type: `React.MutableRefObject<HTMLDivElement>[]`
+  - Description: Array containing references to all slide elements
+
+- **`setSlideRefs`**: Set slide references
+  - Type: `React.Dispatch<React.SetStateAction<React.RefObject<HTMLDivElement | null>[]>>`
+  - Description: Function to update the array of slide references
+
+- **`suspendScrollSnap(duration)`**: Temporarily disable scroll snapping
+  - `duration`: Duration in milliseconds to suspend snapping (default: 1400ms)
+
+- **`instateScrollSnap()`**: Re-enable scroll snapping immediately
 
 #### Usage Example
 
@@ -193,17 +208,6 @@ function NavigationComponent() {
   );
 }
 ```
-
-#### Scroll Control Methods
-
-- **`scrollToView(index, speed)`**: Scroll to a specific view
-  - `index`: View index to scroll to (0-based)
-  - `speed`: Scroll speed in milliseconds (0 = instant, >0 = smooth scroll)
-
-- **`suspendScrollSnap(duration)`**: Temporarily disable scroll snapping
-  - `duration`: Duration in milliseconds to suspend snapping (default: 1400ms)
-
-- **`instateScrollSnap()`**: Re-enable scroll snapping immediately
 
 > **Limitation:**  
 > This component library is intended for use on the root viewport and requires the ReactDOM root to be document.body
