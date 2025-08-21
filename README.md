@@ -18,7 +18,7 @@ The **full-view-snap-react** component intelligently adapts its rendering strate
 - `Measures 100lvh (large viewport height) vs 100svh (small viewport height)
 - `If these values differ, the device correctly supports modern CSS viewport units
 
-**Touch Device Detection::**
+**Touch Device Detection:**
 - Uses window.matchMedia("(pointer:coarse)") to detect touch-capable devices
 - If there's no touch devices, we assume desktop and render on root level for best performance
 
