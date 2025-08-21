@@ -1,6 +1,6 @@
 # full-view-snap-react
 
-A React component library for viewport level vertical scroll snapping with integrated navigation and reusable UI components.
+A React native root viewport scroll wrapper component for css scroll snapping with integrated navigation and reusable UI components.
 
 ## Why full-view-snap-react?
 
@@ -163,7 +163,7 @@ The `RootScrollerContext` provides low-level access to scroll control methods an
 
 - **`scrollToView(index, speed)`**: Scroll to a specific view
   - `index`: View index to scroll to (0-based)
-  - `speed`: Scroll speed in milliseconds (0 = instant, >0 = smooth scroll)
+  - `speed`: Scroll speed in milliseconds (-1 = instant, >0 = smooth scroll)
 
 - **`slideRefs`**: Array of slide references
   - Type: `React.MutableRefObject<HTMLDivElement>[]`
@@ -192,7 +192,7 @@ function NavigationComponent() {
     suspendScrollSnap(1000);
     
     // Scroll to specific view
-    scrollToView(index, 0); // 0 = instant jump, other values = smooth scroll
+    scrollToView(index, 0); // -1 = instant jump, other values = smooth scroll
     
     // Re-enable scroll snapping after 1 second
     setTimeout(() => {
