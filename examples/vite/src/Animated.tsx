@@ -13,7 +13,7 @@ const frameTitles = [
   "Dolphin",
   "Dragon Again",
   "Droplet Again",
-  "Droplet Again",
+  "Dolphin Again",
   "Cockroach"
 ];
 
