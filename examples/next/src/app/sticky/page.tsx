@@ -1,141 +1,147 @@
-import React from 'react';
-import { FullViewSnap, Controller, FullView, StickyView } from 'full-view-snap-react';
+"use client"
 
-const StickyViewPage: React.FC = () => {
+import React from "react";
+import {
+  FullViewSnap,
+  Controller,
+  FullView,
+  AbsoluteView,
+} from "full-view-snap-react";
+
+const mobileStyles = `
+  @media (max-width: 768px) {
+    .mobile-offset {
+      top: 80px !important;
+      margin-top: 80px !important;
+    }
+    .mobile-height {
+      height: calc(100vh * 2 + 200px + 80px) !important;
+    }
+  }
+`;
+
+function AbsoluteViewExample() {
   return (
-    <FullViewSnap
-      hideScrollBars={true}
-      render={(currentView, totalViews, scrollPercentage, contentScrollPercentage) => (
-        <>
-          <Controller>
+    <>
+      <style>{mobileStyles}</style>
+      <FullViewSnap
+        hideScrollBars={true}
+        render={() => (
+          <>
+            <Controller>
             <FullView>
-              <div style={{ 
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2rem'
+              <div style={{
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "2rem",
+                height: "100vh"
               }}>
-                <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>StickyView Demo</h1>
-                <p style={{ fontSize: '1.2rem', textAlign: 'center', maxWidth: '600px' }}>
-                  This example demonstrates the StickyView component that makes its children sticky with CSS.
+                <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                  AbsoluteView Demo
+                </h1>
+                <p style={{ fontSize: "1.2rem", textAlign: "center", maxWidth: "600px" }}>
+                  AbsoluteView allows you to place decorative elements between FullView components while preserving native snap behavior. Scroll to see the sticky element!
                 </p>
               </div>
             </FullView>
-
-            <FullView>
-              <div style={{ 
-                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                color: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2rem',
-                position: 'relative'
-              }}>
-                <StickyView top="20px" zIndex={10}>
-                  <div style={{
-                    background: 'rgba(0,0,0,0.8)',
-                    color: 'white',
-                    padding: '1rem 2rem',
-                    borderRadius: '8px',
-                    fontSize: '1.1rem',
-                    fontWeight: 'bold',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-                  }}>
-                    🎯 This element is sticky!
-                  </div>
-                </StickyView>
-                
-                <div style={{ marginTop: '4rem' }}>
-                  <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Scroll Down</h2>
-                  <p style={{ fontSize: '1.1rem', textAlign: 'center', maxWidth: '500px' }}>
-                    Notice how the sticky element stays in position as you scroll through the content.
-                  </p>
+            <AbsoluteView 
+              className="mobile-height"
+              style={{
+                zIndex: 10, 
+                height: "calc(100vh * 2 + 200px)",
+                right: "20px",
+              }}
+            >
+              <div 
+                className="mobile-offset"
+                style={{
+                  position: "sticky",
+                  top: "0px",
+                  color: "white",
+                  height: "200px",
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  width: "300px"
+                }}
+              >
+                <div style={{ 
+                  padding: "1rem", 
+                  background: "rgba(0,0,0,0.8)", 
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                  borderRadius: "8px", 
+                  marginTop: "0px"
+                }}>
+                  🎯 Sticky Decorative Element
                 </div>
               </div>
-            </FullView>
-
+            </AbsoluteView>
             <FullView>
-              <div style={{ 
-                background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                color: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2rem',
-                position: 'relative'
+              <div style={{
+                background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "2rem",
+                height: "100vh"
               }}>
-                <StickyView top="50%" left="20px" zIndex={10}>
-                  <div style={{
-                    background: 'rgba(255,255,255,0.9)',
-                    color: '#333',
-                    padding: '0.8rem 1.5rem',
-                    borderRadius: '20px',
-                    fontSize: '0.9rem',
-                    fontWeight: '600',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                    transform: 'rotate(-5deg)'
-                  }}>
-                    📌 Side sticky!
-                  </div>
-                </StickyView>
-
-                <div style={{ marginTop: '2rem' }}>
-                  <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Multiple Sticky Elements</h2>
-                  <p style={{ fontSize: '1.1rem', textAlign: 'center', maxWidth: '500px' }}>
-                    You can have multiple sticky elements with different positions and styles.
-                  </p>
-                </div>
+                <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                  Second View
+                </h1>
+                <p style={{ fontSize: "1.2rem", textAlign: "center", maxWidth: "600px" }}>
+                  The AbsoluteView element stays sticky while scrolling through FullView sections. Notice how it maintains its position!
+                </p>
               </div>
-            </FullView>
-
+            </FullView>           
             <FullView>
-              <div style={{ 
-                background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                color: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2rem',
-                position: 'relative'
+              <div style={{
+                background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "2rem",
+                height: "100vh"
               }}>
-                <StickyView bottom="20px" right="20px" zIndex={10}>
-                  <div style={{
-                    background: 'rgba(0,0,0,0.7)',
-                    color: 'white',
-                    padding: '1rem',
-                    borderRadius: '50%',
-                    width: '60px',
-                    height: '60px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-                  }}>
-                    ⬆️
-                  </div>
-                </StickyView>
-
-                <div>
-                  <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Bottom Right Sticky</h2>
-                  <p style={{ fontSize: '1.1rem', textAlign: 'center', maxWidth: '500px' }}>
-                    Sticky elements can be positioned at any edge - top, bottom, left, or right.
-                  </p>
-                </div>
+                <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                  Third View
+                </h1>
+                <p style={{ fontSize: "1.2rem", textAlign: "center", maxWidth: "600px" }}>
+                  Perfect for overlays, notifications, or decorative elements that need to persist across multiple views.
+                </p>
+              </div>
+            </FullView>           
+            <FullView>
+              <div style={{
+                background: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "2rem",
+                height: "100vh"
+              }}>
+                <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                  Fourth View
+                </h1>
+                <p style={{ fontSize: "1.2rem", textAlign: "center", maxWidth: "600px" }}>
+                  The AbsoluteView maintains its position while preserving the native snap behavior of FullView components.
+                </p>
               </div>
             </FullView>
           </Controller>
         </>
       )}
     />
+    </>
   );
 };
 
-export default StickyViewPage;
+export default AbsoluteViewExample;

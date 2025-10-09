@@ -106,6 +106,98 @@ const root = ReactDOM.createRoot(document.body);
 root.render(<App />);
 ```
 
+### AbsoluteView
+
+`AbsoluteView` is a simple wrapper component that creates an absolutely positioned container. It's designed to place decorative elements between and over multiple `FullView` components while preserving native snap behavior.
+
+#### Props
+
+`AbsoluteView` extends all standard HTML div attributes (`React.HTMLAttributes<HTMLDivElement>`) and accepts:
+
+- `children` (optional): React nodes to be rendered inside the absolute container
+- `style` (optional): CSS styles to apply to the container
+- All standard div props (className, id, onClick, etc.)
+
+#### Key Features
+
+- **Simple absolute positioning**: Creates a basic `position: absolute` container
+- **Full div compatibility**: Accepts all standard div props and attributes
+- **No built-in styling**: Provides a clean slate for custom styling
+- **Preserves snap behavior**: Doesn't interfere with `FullView` native scroll snapping
+
+#### Example
+
+```javascript
+import React from 'react';
+import { FullViewSnap, Controller, FullView, AbsoluteView } from 'full-view-snap-react';
+
+const App = () => (
+  <FullViewSnap
+    hideScrollBars={true}
+    render={() => (
+      <>
+        <Controller>
+          <FullView>
+            <h1>First View</h1>
+          </FullView>
+          
+          {/* AbsoluteView for decorative elements */}
+          <AbsoluteView 
+            style={{
+              zIndex: 10,
+              right: "20px",
+              top: "50%",
+              transform: "translateY(-50%)"
+            }}
+          >
+            <div style={{
+              background: "rgba(0,0,0,0.8)",
+              color: "white",
+              padding: "1rem",
+              borderRadius: "8px",
+              width: "200px",
+              position: "sticky,
+              top: "0px"
+            }}>
+              🎯 Sticky Element
+            </div>
+          </AbsoluteView>
+          
+          <FullView>
+            <h1>Second View</h1>
+          </FullView>
+          <FullView>
+            <h1>Third View</h1>
+          </FullView>
+        </Controller>
+      </>
+    )}
+  />
+);
+```
+
+#### Use Cases
+
+- **Overlays**: Position elements that need to persist above or underneath multiple views
+- **Decorative elements**: Add visual elements that stick above the views at specific points
+
+#### Mobile Considerations
+
+For mobile devices, consider using responsive positioning:
+
+```javascript
+<AbsoluteView 
+  style={{
+    zIndex: 10,
+    right: "20px", // Desktop: right side
+    bottom: "20px", // Mobile: bottom (override with media queries)
+    width: "300px"
+  }}
+>
+  {/* Content */}
+</AbsoluteView>
+```
+
 ### FullViewSnapContext
 
 The `FullViewSnapContext` provides access to the current scroll state.

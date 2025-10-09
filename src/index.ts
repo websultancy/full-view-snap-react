@@ -5,5 +5,5 @@ export { default as FullViewSnap } from './components/FullViewSnap';
 export { FullViewSnapContext } from './components/FullViewSnap';
 export { default as Controller } from './components/Controller';
 export { default as FullView } from './components/FullView';
-export { default as StickyView } from './components/StickyView';
 export { default as RootScrollerContext } from './components/RootScrollerContext';
+export { default as AbsoluteView } from './components/AbsoluteView';

@@ -81,7 +81,6 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
 
   // Process all children - filter only FullView for ref handling
   const allChildren = React.Children.toArray(children);
-  console.log("Controller received children:", allChildren);
   const fullViewChildren = allChildren.filter((child) => {
     if (!React.isValidElement(child)) return false;
     return (child as any).type?.displayName === "FullView";
@@ -125,7 +124,6 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
   const childrenWithRefs = allChildren.map((child, idx) => {
     if (React.isValidElement(child)) {
       const displayName = (child as any).type?.displayName;
-      console.log(`Child ${idx} displayName:`, displayName, 'Type:', (child as any).type);
       if (displayName === "FullView") {
         // Find the index of this FullView in the fullViewChildren array
         let fullViewIdx = -1;

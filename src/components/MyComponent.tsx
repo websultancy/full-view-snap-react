@@ -13,7 +13,7 @@ const MyComponent: React.FC<MyComponentProps> = ({ label, onClick }) => {
     const size = useSize(ref);
     React.useEffect(() => {
         if (size.width && size.height) {
-            console.log(`Button size: ${size.width}x${size.height}`);
+            // Size tracking logic can be added here if needed
         }
     }, [size]);
     return (

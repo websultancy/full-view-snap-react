@@ -66,10 +66,3 @@
 .FVS-no-scrollbar::-webkit-scrollbar {
   display: none !important;                /* Chrome, Safari, Opera */
 }
-.FVS-sticky-container {
-  position: absolute !important;
-}
-
-.FVS-sticky-element {
-  position: sticky !important;
-}
