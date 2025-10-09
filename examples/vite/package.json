@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@gsap/react": "2.1.1",
-    "full-view-snap-react": "^1.0.4",
+    "full-view-snap-react": "file:.yalc/full-view-snap-react",
     "gsap": "^3.13.0",
     "lottie-react": "^2.4.1",
     "react": "^19.1.0",

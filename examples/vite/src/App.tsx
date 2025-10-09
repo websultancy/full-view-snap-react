@@ -2,33 +2,50 @@ import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-do
 import Basic from './Basic';
 import Animated from './Animated';
 import Navigation from './Navigation';
+import AbsoluteViewExample from './AbsoluteView';
 import './app.css';
 import FullViewSnapLogo from './assets/fullviewsnaplogo.svg?react'; // Import as React component
 import WebsultancyLogo from './assets/websultancy_logo.svg?react'; // Import websultancy logo
 import ScrollToTop from "./components/ScrollToTop";
 
+const mobileNavStyles = `
+  @media (max-width: 768px) {
+    .nav-links {
+      flex-direction: column !important;
+      gap: 1rem !important;
+      align-items: center !important;
+    }
+    .nav-links li {
+      margin: 0 !important;
+    }
+  }
+`;
+
 function Home() {
   return (
-    <div className='central-central'>
-      {/* Use the SVG as a React component and inherit color */}
-      <FullViewSnapLogo
-        style={{
-          width: '80vw',
-          maxWidth: 350,
-          marginBottom: 16,
-          color: 'var(--logo-color, #222)' // fallback to #222 if not set
-        }}
-      />
-      <ul
-        style={{
-          display: 'flex',
-          marginTop: 20,
-          gap: '1.5rem',
-          listStyle: 'none',
-          padding: 0,
-          justifyContent: 'center', // center horizontally
-        }}
-      >
+    <>
+      <style>{mobileNavStyles}</style>
+      <div className='central-central'>
+        {/* Use the SVG as a React component and inherit color */}
+        <FullViewSnapLogo
+          style={{
+            width: '80vw',
+            maxWidth: 350,
+            marginBottom: 16,
+            color: 'var(--logo-color, #222)' // fallback to #222 if not set
+          }}
+        />
+        <ul
+          className="nav-links"
+          style={{
+            display: 'flex',
+            marginTop: 20,
+            gap: '1.5rem',
+            listStyle: 'none',
+            padding: 0,
+            justifyContent: 'center', // center horizontally
+          }}
+        >
         <li>
           Examples:
         </li>
@@ -41,8 +58,12 @@ function Home() {
         <li>
           <Link to="/navigation">Navigation</Link>
         </li>
-      </ul>
-    </div>
+        <li>
+          <Link to="/sticky">Sticky</Link>
+        </li>
+        </ul>
+      </div>
+    </>
   );
 }
 
@@ -111,6 +132,7 @@ function App() {
           <Route path="/basic" element={<Basic />} />
           <Route path="/animated" element={<Animated />} />
           <Route path="/navigation" element={<Navigation />} />
+          <Route path="/sticky" element={<AbsoluteViewExample />} />
         </Routes>
       </Layout>
     </BrowserRouter>

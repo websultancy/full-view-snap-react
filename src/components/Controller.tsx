@@ -63,8 +63,8 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
 
       const contentScrollPercentage = contentScrollTop / contentScrollBottom;
 
-      //Use the scroll percentage to calculate the current index based on the number of children
-      const childCount = React.Children.count(children);
+      //Use the scroll percentage to calculate the current index based on the number of FullView children
+      const childCount = React.Children.count(fullViewChildren);
       const newIndex = Math.round(contentScrollPercentage * (childCount - 1));
 
       const newState: contextStateProps = {
@@ -79,6 +79,14 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
     }
   }, [rootScroller]);
 
+  // Process all children - filter only FullView for ref handling
+  const allChildren = React.Children.toArray(children);
+  console.log("Controller received children:", allChildren);
+  const fullViewChildren = allChildren.filter((child) => {
+    if (!React.isValidElement(child)) return false;
+    return (child as any).type?.displayName === "FullView";
+  });
+
   useEffect(() => {
     if (rootScroller.rootScrollerRef?.current) {
       const scroller =
@@ -89,51 +97,53 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
       // Attach the scroll event listener
       scroller.addEventListener("scroll", updateScrollContext);
 
-      contextState.totalViews = React.Children.count(children);
+      contextState.totalViews = React.Children.count(fullViewChildren);
 
       // Cleanup function to remove the event listener
       return () => {
         scroller.removeEventListener("scroll", updateScrollContext);
       };
     }
-  }, [rootScroller]);
+  }, [rootScroller, fullViewChildren.length]);
 
   useEffect(() => {
     contextStateRef.current = contextState;
   }, [contextState]);
 
-  const filteredChildren = React.Children.toArray(children).filter((child) => {
-    if (!React.isValidElement(child)) return false;
-    //
-    //If child has a prop displayName
-    if ((child as any).type.displayName === "FullView") {
-      return true;
-    }
-  });
-
-
-    // Create a ref array for FullView children
+  // Create a ref array for FullView children only
   const fullViewRefs = React.useRef<
     Array<React.RefObject<HTMLDivElement>>
   >([]);
   if (fullViewRefs.current.length === 0) {
     // Initialize or reset refs if children count changes
-    fullViewRefs.current = filteredChildren.map(() =>
+    fullViewRefs.current = fullViewChildren.map(() =>
       React.createRef<HTMLDivElement>()
     );
   }
 
-  // Clone FullView children and attach refs
-  const childrenWithRefs = filteredChildren.map((child, idx) => {
-    if (
-      React.isValidElement(child) &&
-      (child as any).type.displayName === "FullView"
-    ) {
-      // Instead of touching element.ref (React 19), pass controller's ref via an explicit prop
-      return React.cloneElement(child as React.ReactElement<any>, {
-        key: child.key ?? idx,
-        internalRef: fullViewRefs.current[idx],
-      });
+  // Process all children - FullView gets refs, StickyView passes through
+  const childrenWithRefs = allChildren.map((child, idx) => {
+    if (React.isValidElement(child)) {
+      const displayName = (child as any).type?.displayName;
+      console.log(`Child ${idx} displayName:`, displayName, 'Type:', (child as any).type);
+      if (displayName === "FullView") {
+        // Find the index of this FullView in the fullViewChildren array
+        let fullViewIdx = -1;
+        for (let i = 0; i < fullViewChildren.length; i++) {
+          if (fullViewChildren[i] === child) {
+            fullViewIdx = i;
+            break;
+          }
+        }
+        // Instead of touching element.ref (React 19), pass controller's ref via an explicit prop
+        return React.cloneElement(child as React.ReactElement<any>, {
+          key: child.key ?? idx,
+          internalRef: fullViewRefs.current[fullViewIdx],
+        });
+      } else if ((child as any).type?.displayName === "StickyView") {
+        // StickyView doesn't need refs, just return as is
+        return child;
+      }
     }
     return child;
   });
@@ -142,13 +152,15 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
     // Update the context state with the new total views
     if (fullViewRefs.current)
       setSlideRefs(fullViewRefs.current);
-  }, [childrenWithRefs]);
+  }, [fullViewChildren.length]);
 
   //Add a buffer space div each side of the children to allow a nice snap buffer effect
-  childrenWithRefs.unshift(
-    <EdgeSpacer ref={topSpacerRef} key="start-spacer" />
-  );
-  childrenWithRefs.push(<EdgeSpacer ref={endSpacerRef} key="end-spacer" />);
+  const finalChildren = [
+    <EdgeSpacer ref={topSpacerRef} key="start-spacer" />,
+    ...childrenWithRefs,
+    <EdgeSpacer ref={endSpacerRef} key="end-spacer" />
+  ];
+  
   return (
     <>
       {/* Create a div that has a 100lvh so we can store that height in a vairalbe */}
@@ -156,7 +168,7 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
         ref={dummyLvhDiv}
         className="FVS-w-[100%] FVS-h-[100lvh] FVS-absolute FVS-top-0 FVS-left-0 FVS-pointer-events-none FVS-z-[-1]"
       />
-      {childrenWithRefs}
+      {finalChildren}
     </>
   );
 };
