@@ -10,8 +10,11 @@
   },
   "homepage": "https://github.com/websultancy/full-view-snap-react#readme",
   "scripts": {
-    "build": "tsup && npm run copy-css",
+    "build": "tsup && yarn copy-css",
     "copy-css": "cp src/index.css dist/index.css",
+    "watch": "tsup --watch",
+    "dev": "tsup --watch",
+    "yalc:push": "yalc push",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [
@@ -30,10 +33,11 @@
     "react-usestateref": "^1.0.9"
   },
   "devDependencies": {
-    "typescript": "4.9.5",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.14",
-    "tsup": "^8.3.5"
+    "tsup": "^8.3.5",
+    "typescript": "4.9.5",
+    "yalc": "^1.0.0-pre.53"
   },
   "bundledDependencies": [
     "@react-hook/resize-observer",

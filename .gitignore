@@ -33,3 +33,6 @@ override.tf.json
 .terraform.lock.hcl
 terraform.tfvars.json
 terraform/site_files
+examples/vite/.yalc
+yarn.lock
+yalc.lock
