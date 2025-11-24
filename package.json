@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/websultancy/full-view-snap-react.git"
+    "url": "git+https://github.com/websultancy/full-view-snap-react.git"
   },
   "homepage": "https://github.com/websultancy/full-view-snap-react#readme",
   "scripts": {
