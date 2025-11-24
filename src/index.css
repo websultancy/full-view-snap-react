@@ -6,7 +6,9 @@
   overflow-y: scroll;
 }
 .FVS-h-\[100dvh\] {
-  height: 100dvh;
+  height: 100%; /* Final fallback */
+  height: 100vh; /* Fallback for older browsers */
+  height: 100dvh; /* Modern browsers */
 }
 .FVS-snap-y {
   scroll-snap-type: y mandatory;
@@ -24,7 +26,10 @@
   width: 100% !important;
 }
 .FVS-h-\[100svh\] {
-  height: 100svh !important;
+  height: 100% !important; /* Final fallback */
+  height: 100vh !important; /* Fallback for older browsers */
+  height: 100dvh !important; /* Fallback for browsers with dvh support */
+  height: 100svh !important; /* Modern browsers with svh support */
 }
 .FVS-snap-start {
   scroll-snap-align: start !important;
@@ -33,7 +38,10 @@
   scroll-snap-align: end !important;
 }
 .FVS-h-\[100lvh\] {
-  height: 100lvh !important;
+  height: 100% !important; /* Final fallback */
+  height: 100vh !important; /* Fallback for older browsers */
+  height: 100dvh !important; /* Fallback for browsers with dvh support */
+  height: 100lvh !important; /* Modern browsers with lvh support */
 }
 .FVS-absolute {
   position: absolute !important;
@@ -51,7 +59,8 @@
   z-index: -1 !important;
 }
 .FVS-h-\[10vh\] {
-  height: 10vh !important;
+  height: 10% !important; /* Final fallback */
+  height: 10vh !important; /* Standard viewport height */
 }
 .FVS-snap-none {
   scroll-snap-align: none !important;
