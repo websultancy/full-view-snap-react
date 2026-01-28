@@ -8,6 +8,18 @@ export default defineConfig({
   plugins: [react(), svgr()],
   server: {
     host: true, // This exposes the dev server on your local network IP
+    watch: {
+      // Watch for changes in the yalc package
+      ignored: ['!**/node_modules/full-view-snap-react/**'],
+    },
+    fs: {
+      // Allow serving files from the yalc package
+      allow: ['..'],
+    },
+  },
+  optimizeDeps: {
+    // Force Vite to re-bundle the yalc package when it changes
+    include: ['full-view-snap-react'],
   },
   build: {
     outDir: path.resolve(__dirname, 'dist'),

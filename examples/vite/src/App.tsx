@@ -3,6 +3,7 @@ import Basic from './Basic';
 import Animated from './Animated';
 import Navigation from './Navigation';
 import AbsoluteViewExample from './AbsoluteView';
+import DynamicSlideCount from './DynamicSlideCount';
 import './app.css';
 import FullViewSnapLogo from './assets/fullviewsnaplogo.svg?react'; // Import as React component
 import WebsultancyLogo from './assets/websultancy_logo.svg?react'; // Import websultancy logo
@@ -60,6 +61,9 @@ function Home() {
         </li>
         <li>
           <Link to="/sticky">Sticky</Link>
+        </li>
+        <li>
+          <Link to="/dynamic-slide-count">Dynamic Slide Count</Link>
         </li>
         </ul>
       </div>
@@ -133,6 +137,7 @@ function App() {
           <Route path="/animated" element={<Animated />} />
           <Route path="/navigation" element={<Navigation />} />
           <Route path="/sticky" element={<AbsoluteViewExample />} />
+          <Route path="/dynamic-slide-count" element={<DynamicSlideCount />} />
         </Routes>
       </Layout>
     </BrowserRouter>

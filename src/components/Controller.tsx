@@ -32,7 +32,6 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
   
   //Define a callback that acts as the event listener for the scroll event on the root scroller
   const updateScrollContext = useCallback(() => {
-
     //Get the total scroll through percentage and log it
     if (
       rootScroller.rootScrollerRef?.current !== null &&
@@ -96,14 +95,23 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
       // Attach the scroll event listener
       scroller.addEventListener("scroll", updateScrollContext);
 
-      contextState.totalViews = React.Children.count(fullViewChildren);
-
       // Cleanup function to remove the event listener
       return () => {
         scroller.removeEventListener("scroll", updateScrollContext);
       };
     }
   }, [rootScroller, fullViewChildren.length]);
+
+  // Update totalViews when the number of FullView children changes
+  useEffect(() => {
+    const newTotalViews = React.Children.count(fullViewChildren);
+    if (contextStateRef.current.totalViews !== newTotalViews) {
+      updateContextState({
+        ...contextStateRef.current,
+        totalViews: newTotalViews,
+      });
+    }
+  }, [fullViewChildren.length, updateContextState]);
 
   useEffect(() => {
     contextStateRef.current = contextState;
@@ -113,8 +121,9 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
   const fullViewRefs = React.useRef<
     Array<React.RefObject<HTMLDivElement>>
   >([]);
-  if (fullViewRefs.current.length === 0) {
-    // Initialize or reset refs if children count changes
+  
+  // Update refs array when the number of FullView children changes
+  if (fullViewRefs.current.length !== fullViewChildren.length) {
     fullViewRefs.current = fullViewChildren.map(() =>
       React.createRef<HTMLDivElement>()
     );
