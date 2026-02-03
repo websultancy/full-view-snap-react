@@ -36,3 +36,4 @@ terraform/site_files
 examples/vite/.yalc
 yarn.lock
 yalc.lock
+examples/next/.yalc
