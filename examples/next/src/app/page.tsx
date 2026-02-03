@@ -56,6 +56,9 @@ export default function Home() {
         <li>
           <Link href="/sticky">Sticky</Link>
         </li>
+        <li>
+          <Link href="/dynamic-slide-count">Dynamic Slide Count</Link>
+        </li>
         </ul>
       </div>
       </div>

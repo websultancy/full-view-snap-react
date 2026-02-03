@@ -14,6 +14,10 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "full-view-snap-react": [".yalc/full-view-snap-react"]
+    },
 
     /* Linting */
     "strict": true,

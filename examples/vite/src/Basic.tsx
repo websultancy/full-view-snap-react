@@ -6,10 +6,10 @@ function Basic() {
     <FullViewSnap
       hideScrollBars={true}
       render={(
-        currentView,
-        totalViews,
-        scrollPercentage,
-        contentScrollPercentage
+        currentView: number,
+        totalViews: number,
+        scrollPercentage: number,
+        contentScrollPercentage: number
       ) => (
 				<>
         {/* This is a fixed item,  make sure it renders beneath the <Controller/> otherwise it will block scrolling */}

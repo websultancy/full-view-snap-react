@@ -6,11 +6,16 @@ console.log(path.resolve(__dirname, '../../src'));
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), svgr()],
+  resolve: {
+    alias: {
+      'full-view-snap-react': path.resolve(__dirname, '.yalc/full-view-snap-react'),
+    },
+  },
   server: {
     host: true, // This exposes the dev server on your local network IP
     watch: {
       // Watch for changes in the yalc package
-      ignored: ['!**/node_modules/full-view-snap-react/**'],
+      ignored: ['!**/.yalc/full-view-snap-react/**'],
     },
     fs: {
       // Allow serving files from the yalc package
