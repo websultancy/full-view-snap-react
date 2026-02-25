@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FullViewSnap, FullView, Controller } from "full-view-snap-react";
 import "./Basic.css";
-import FullViewSnapDebugger from "./components/FullViewSnapDebugger";
 
 const colors = [
   "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -89,16 +88,8 @@ function DynamicSlideCount() {
       </div>
       <FullViewSnap
         hideScrollBars={true}
-        render={(currentView, totalViews, scrollPercentage, contentScrollPercentage, rootScrollerContext) => (
+        render={(currentView, totalViews) => (
           <>
-            <FullViewSnapDebugger
-              currentView={currentView}
-              totalViews={totalViews}
-              scrollPercentage={scrollPercentage}
-              contentScrollPercentage={contentScrollPercentage}
-              rootScrollerContext={rootScrollerContext}
-              position="top-right"
-            />
             <div
               style={{
                 position: "fixed",
