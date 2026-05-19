@@ -1,13 +1,15 @@
 "use client";
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
+import RootScrollerContext from './RootScrollerContext';
 
 const EdgeSpacer = forwardRef<HTMLDivElement, {}>((_props, ref) => {
-    // add empty timeline duration to the slide timeline in the useGsap hook
+    const enabled = useContext(RootScrollerContext).enabled ?? true;
+
     return (
         <div
             ref={ref}
-            className="FVS-h-[10vh] FVS-snap-none"
-            style={{height: '10lvh'}}
+            className={enabled ? "FVS-h-[10vh] FVS-snap-none" : ""}
+            style={enabled ? { height: "10lvh" } : undefined}
         >
             {/* Your content here */}
         </div>

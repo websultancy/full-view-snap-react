@@ -13,12 +13,20 @@ const FullView = forwardRef<HTMLDivElement, FullViewProps>(({ children, isLast =
     // Get the root scroll context and obtain the isFixedViewport property
     const rootScroller = React.useContext(RootScrollerContext);
     const isFixedViewport = rootScroller.isFixedViewport;
+    const enabled = rootScroller.enabled ?? true;
+
+    const outerClassName = enabled
+        ? `FVS-w-[100%] FVS-h-[100svh] ${!isLast ? "FVS-snap-start" : "FVS-snap-end"}`
+        : "";
+    const innerClassName = enabled
+        ? `${isFixedViewport ? "FVS-h-[100dvh]" : "FVS-h-[100lvh]"} FVS-w-full`
+        : "";
 
     // FC container ref
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        if (!enabled || !containerRef.current) return;
         const parent = containerRef.current.parentElement;
 
         if (!isFixedViewport) {
@@ -38,7 +46,7 @@ const FullView = forwardRef<HTMLDivElement, FullViewProps>(({ children, isLast =
                 );
             }
         }
-    }, [containerRef, rootScroller.rootScrollerRef]);
+    }, [enabled, isFixedViewport, rootScroller.rootScrollerRef]);
 
     // Merge user ref with internal controller ref without reading element.ref
     const mergeRefs = (...refs: Array<React.Ref<HTMLDivElement> | undefined>) => {
@@ -59,13 +67,17 @@ const FullView = forwardRef<HTMLDivElement, FullViewProps>(({ children, isLast =
     return (
         <div
             ref={containerRef}
-            className={`FVS-w-[100%] FVS-h-[100svh] ${!isLast ? "FVS-snap-start" : "FVS-snap-end"}`}
-            style={{ marginBottom: 'calc(100lvh - 100svh)'}} // This is samsung internet specific fix,  for samsung internet lvh varies depending on the screen size and svh is consistent
+            className={outerClassName}
+            style={
+                enabled
+                    ? { marginBottom: "calc(100lvh - 100svh)" }
+                    : undefined
+            }
         >
             <div
                 ref={mergeRefs(ref, internalRef)}
-                style={{ position: 'absolute', overflow: 'hidden' }}
-                className={`${isFixedViewport ? 'FVS-h-[100dvh]' : 'FVS-h-[100lvh]'} FVS-w-full`}
+                style={enabled ? { position: "absolute", overflow: "hidden" } : undefined}
+                className={innerClassName}
             >
                 {children}
             </div>

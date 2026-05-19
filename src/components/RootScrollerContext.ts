@@ -4,6 +4,7 @@ import type { MutableRefObject } from 'react';
 
 export interface RootScrollerContextProps {
     rootScrollerRef: MutableRefObject<HTMLDivElement | HTMLElement> | null;
+    enabled: boolean;
     isFixedViewport: boolean | null, // Default value for isFixedViewport
     scrollToView?: (index: number, speed?:number) => void; // Optional function to scroll to a specific slide
     slideRefs?: React.MutableRefObject<HTMLDivElement[]>[]; // Optional array of slide refs
@@ -14,6 +15,7 @@ export interface RootScrollerContextProps {
 
 const RootScrollerContext = createContext<RootScrollerContextProps>({
     rootScrollerRef: null,
+    enabled: true,
     scrollToView: undefined, // Default value set to undefined
     slideRefs: undefined, // Default value set to undefined
     isFixedViewport: false, // Default value for isFixedViewport

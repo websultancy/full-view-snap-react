@@ -23,6 +23,8 @@ interface FullViewSnapContextProps {
 interface FullViewSnapProps {
   children?: ReactNode;
   hideScrollBars?: boolean;
+  /** When false, removes viewport size and scroll-snap classes from slides. Defaults to true. */
+  enabled?: boolean;
   render: (
     currentView: number,
     totalViews: number,
@@ -49,6 +51,7 @@ export const FullViewSnapContext =
 const FullViewSnap: React.FC<FullViewSnapProps> = ({
   render,
   hideScrollBars = false,
+  enabled = true,
 }) => {
 
   // Bring in the rootscroller ref from the RootScrollerContext
@@ -74,7 +77,7 @@ const FullViewSnap: React.FC<FullViewSnapProps> = ({
     <FullViewSnapContext.Provider
       value={{ contextState, updateContextState }}
     >
-      <RootScroller hideScrollBars={hideScrollBars}>
+      <RootScroller hideScrollBars={hideScrollBars} enabled={enabled}>
           {render(
             contextState.currentIndex,
             contextState.totalViews,

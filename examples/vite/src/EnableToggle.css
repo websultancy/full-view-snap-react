@@ -1,0 +1,128 @@
+/* Hide fixed App back button when snap is off (inline back link shown instead) */
+body.enable-toggle-snap-off .app-back-button {
+  display: none !important;
+}
+
+.enable-toggle-back-bar {
+  position: relative;
+  z-index: auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 1rem 0;
+  pointer-events: auto;
+}
+
+.enable-toggle-back-link {
+  height: 40px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  background: #222;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* Override global index.css `a` / `a:hover` link colors */
+.enable-toggle-back-link:hover,
+.enable-toggle-back-link:focus,
+.enable-toggle-back-link:focus-visible,
+.enable-toggle-back-link:visited {
+  background: #333;
+  color: #fff;
+}
+
+.full-view-enabled-toggle {
+  font: inherit;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  min-width: 160px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  background: linear-gradient(180deg, #646cff 0%, #4f58e8 100%);
+  border: 2px solid #8b93ff;
+  border-radius: 10px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.full-view-enabled-toggle:hover {
+  cursor: pointer;
+  background: linear-gradient(180deg, #757dff 0%, #5c65ee 100%);
+  border-color: #a8aeff;
+  box-shadow:
+    0 4px 14px rgba(100, 108, 255, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  transform: translateY(-1px);
+}
+
+.full-view-enabled-toggle:active {
+  transform: translateY(0);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+.full-view-enabled-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.full-view-enabled-toggle .full-view-stat-title,
+.full-view-enabled-toggle .full-view-stat-value {
+  cursor: pointer;
+}
+
+.full-view-enabled-toggle .full-view-stat-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+  margin-bottom: 0.35rem;
+}
+
+.full-view-enabled-toggle .full-view-stat-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 6px;
+  padding: 0.2rem 0.85rem;
+  min-width: 3.5rem;
+  text-align: center;
+}
+
+.full-view-wrapper-content .full-view-enabled-toggle {
+  margin-top: 1.25rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .full-view-enabled-toggle {
+    flex-direction: row;
+    text-align: right;
+    min-width: auto;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .full-view-enabled-toggle .full-view-stat-title {
+    margin-bottom: 0;
+    margin-right: 0.25rem;
+  }
+}

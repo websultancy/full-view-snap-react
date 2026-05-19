@@ -4,6 +4,7 @@ import Animated from './Animated';
 import Navigation from './Navigation';
 import AbsoluteViewExample from './AbsoluteView';
 import DynamicSlideCount from './DynamicSlideCount';
+import EnableToggle from './EnableToggle';
 import './app.css';
 import FullViewSnapLogo from './assets/fullviewsnaplogo.svg?react'; // Import as React component
 import WebsultancyLogo from './assets/websultancy_logo.svg?react'; // Import websultancy logo
@@ -65,6 +66,9 @@ function Home() {
         <li>
           <Link to="/dynamic-slide-count">Dynamic Slide Count</Link>
         </li>
+        <li>
+          <Link to="/enable-toggle">Enable Toggle</Link>
+        </li>
         </ul>
       </div>
     </>
@@ -75,10 +79,12 @@ function BackButton() {
   return (
     <Link
       to="/"
+      className="app-back-button"
       style={{
         position: 'fixed',
         top: 16,
         left: 16,
+        zIndex: 1200,
         height: '40px',
         padding: '8px 16px',
         fontSize: '16px',
@@ -138,6 +144,7 @@ function App() {
           <Route path="/navigation" element={<Navigation />} />
           <Route path="/sticky" element={<AbsoluteViewExample />} />
           <Route path="/dynamic-slide-count" element={<DynamicSlideCount />} />
+          <Route path="/enable-toggle" element={<EnableToggle />} />
         </Routes>
       </Layout>
     </BrowserRouter>

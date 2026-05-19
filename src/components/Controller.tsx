@@ -31,15 +31,76 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
   const { contextState, updateContextState } = useContext(FullViewSnapContext);
 
   const contextStateRef = React.useRef<contextStateProps>(contextState);
-  
+
+  const allChildren = React.Children.toArray(children);
+  const fullViewChildren = allChildren.filter((child) => {
+    if (!React.isValidElement(child)) return false;
+    return (child as any).type?.displayName === "FullView";
+  });
+
+  const fullViewRefs = React.useRef<Array<React.RefObject<HTMLDivElement>>>([]);
+
+  if (fullViewRefs.current.length !== fullViewChildren.length) {
+    fullViewRefs.current = fullViewChildren.map(() =>
+      React.createRef<HTMLDivElement>()
+    );
+  }
+
   //Define a callback that acts as the event listener for the scroll event on the root scroller
   const updateScrollContext = useCallback(() => {
+    if (
+      !rootScroller.rootScrollerRef?.current ||
+      currentTotalViewsRef.current <= 0
+    ) {
+      return;
+    }
+
+    const scrollerEl = rootScroller.rootScrollerRef.current;
+    const isDocumentScroller = scrollerEl === document.documentElement;
+    const childCount = fullViewChildren.length;
+
+    if (!rootScroller.enabled) {
+      const scrollTop = isDocumentScroller
+        ? window.scrollY
+        : scrollerEl.scrollTop;
+      const scrollHeight = isDocumentScroller
+        ? document.documentElement.scrollHeight
+        : scrollerEl.scrollHeight;
+      const clientHeight = isDocumentScroller
+        ? window.innerHeight
+        : scrollerEl.clientHeight;
+      const maxScroll = Math.max(scrollHeight - clientHeight, 1);
+      const scrollPercentage = scrollTop / maxScroll;
+
+      let newIndex = 0;
+      const midpoint = clientHeight * 0.5;
+      fullViewRefs.current.forEach((slideRef, index) => {
+        const slideEl = slideRef.current;
+        if (!slideEl) return;
+        const { top } = slideEl.getBoundingClientRect();
+        if (top <= midpoint) {
+          newIndex = index;
+        }
+      });
+
+      const contentScrollPercentage =
+        childCount > 1 ? newIndex / (childCount - 1) : 1;
+
+      updateContextState({
+        ...contextStateRef.current,
+        currentScrollPercentage: scrollPercentage,
+        currentContentScrollPercentage: contentScrollPercentage,
+        totalViews: currentTotalViewsRef.current,
+        currentIndex: newIndex,
+        edgeSpacerRef: topSpacerRef,
+      });
+      return;
+    }
+
     //Get the total scroll through percentage and log it
     if (
-      rootScroller.rootScrollerRef?.current !== null &&
       rootScroller?.rootScrollerRef &&
-      dummyLvhDiv.current !== null &&
-      currentTotalViewsRef.current > 0
+      dummyLvhDiv.current !== null
     ) {
       //We want to exculude the buffer spacers for the calculation
 
@@ -65,7 +126,6 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
       const contentScrollPercentage = (currentTotalViewsRef.current > 1) ? contentScrollTop / contentScrollBottom : 1;
 
       //Use the scroll percentage to calculate the current index based on the number of FullView children
-      const childCount = React.Children.count(fullViewChildren);
       const newIndex = Math.round(contentScrollPercentage * (childCount - 1));
 
       const newState: contextStateProps = {
@@ -79,14 +139,7 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
 
       updateContextState(newState);
     }
-  }, [rootScroller, currentTotalViewsRef]);
-
-  // Process all children - filter only FullView for ref handling
-  const allChildren = React.Children.toArray(children);
-  const fullViewChildren = allChildren.filter((child) => {
-    if (!React.isValidElement(child)) return false;
-    return (child as any).type?.displayName === "FullView";
-  });
+  }, [rootScroller, fullViewChildren.length, updateContextState]);
 
   useEffect(() => {
     if (rootScroller.rootScrollerRef?.current) {
@@ -114,18 +167,6 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
   useEffect(() => {
     contextStateRef.current = contextState;
   }, [contextState]);
-
-  // Create a ref array for FullView children only
-  const fullViewRefs = React.useRef<
-    Array<React.RefObject<HTMLDivElement>>
-  >([]);
-  
-  // Update refs array when the number of FullView children changes
-  if (fullViewRefs.current.length !== fullViewChildren.length) {
-    fullViewRefs.current = fullViewChildren.map(() =>
-      React.createRef<HTMLDivElement>()
-    );
-  }
 
   // Process all children - FullView gets refs, StickyView passes through
   const childrenWithRefs = allChildren.map((child, idx) => {
@@ -171,7 +212,11 @@ const FullViewSnapController: React.FC<FullViewSnapControllerProps> = ({
       {/* Create a div that has a 100lvh so we can store that height in a vairalbe */}
       <div
         ref={dummyLvhDiv}
-        className="FVS-w-[100%] FVS-h-[100lvh] FVS-absolute FVS-top-0 FVS-left-0 FVS-pointer-events-none FVS-z-[-1]"
+        className={
+          rootScroller.enabled
+            ? "FVS-w-[100%] FVS-h-[100lvh] FVS-absolute FVS-top-0 FVS-left-0 FVS-pointer-events-none FVS-z-[-1]"
+            : "FVS-absolute FVS-top-0 FVS-left-0 FVS-pointer-events-none FVS-z-[-1]"
+        }
       />
       {finalChildren}
     </>

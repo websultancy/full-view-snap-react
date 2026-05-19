@@ -26,10 +26,10 @@ The **full-view-snap-react** component intelligently adapts its rendering strate
 
 You can view a live demo [here](https://dgan8ja2q09by.cloudfront.net/vite).
 
-## Example
+## Examples
 
-[`examples/vite/src`](./examples/vite/src) for vite example implementation.
-[`examples/next/src`](./examples/next/src) for nextjs example implementation.
+- [`examples/vite/src`](./examples/vite/src) — Vite demo (includes an **Enable Toggle** route at `/enable-toggle` that toggles the `enabled` prop at runtime)
+- [`examples/next/src`](./examples/next/src) — Next.js demo
 
 ## Installation
 
@@ -62,6 +62,9 @@ npm install full-view-snap-react
 - `hideScrollBars` (optional): A boolean that determines whether to hide scroll bars
   - `true`: Scroll bars will be hidden
   - `false` (default): Scroll bars will be visible
+- `enabled` (optional): A boolean that toggles full-view snap layout at runtime (default: `true`)
+  - `true` (default): Slides use viewport height and scroll-snap classes; scroll position is tracked
+  - `false`: Viewport height, scroll-snap, and related layout classes are removed from `FullView`, `EdgeSpacer`, and the root scroller. Slides wrap to their content height and the page scrolls like a normal document. `Controller` continues to update scroll state from document scroll; `suspendScrollSnap` / `instateScrollSnap` are no-ops until snap is turned back on
 - `render`: A function that receives the current view state and returns React nodes to be rendered as snap sections.
   - `currentView`: The current view index (0-based)
   - `totalViews`: The total number of views
@@ -105,6 +108,43 @@ const App = () => (
 const root = ReactDOM.createRoot(document.body);
 root.render(<App />);
 ```
+
+#### Disabling snap at runtime
+
+Pass `enabled` from component state (or any other source) to switch between full-view snap and normal document flow:
+
+```javascript
+import React, { useState } from 'react';
+import { FullViewSnap, Controller, FullView } from 'full-view-snap-react';
+
+const App = () => {
+  const [enabled, setEnabled] = useState(true);
+
+  return (
+  <FullViewSnap
+    enabled={enabled}
+    hideScrollBars={true}
+    render={() => (
+      <>
+        <Controller>
+          <FullView>
+            <h1>view 1</h1>
+            <button type="button" onClick={() => setEnabled((v) => !v)}>
+              Snap {enabled ? 'on' : 'off'}
+            </button>
+          </FullView>
+          <FullView>
+            <h1>view 2</h1>
+          </FullView>
+        </Controller>
+      </>
+    )}
+  />
+  );
+};
+```
+
+See [`examples/vite/src/EnableToggle.tsx`](./examples/vite/src/EnableToggle.tsx) for a full demo.
 
 ### AbsoluteView
 
@@ -249,6 +289,10 @@ The `RootScrollerContext` provides low-level access to scroll control methods an
   - Type: `MutableRefObject<HTMLDivElement | HTMLElement> | null`
   - Description: Direct reference to the scroll container element
 
+- **`enabled`**: Whether full-view snap layout is active
+  - Type: `boolean`
+  - Description: Mirrors the `enabled` prop on `FullViewSnap`. When `false`, snap-related behaviour in context helpers is inactive
+
 - **`isFixedViewport`**: Whether using fixed viewport mode
   - Type: `boolean | null`
   - Description: Indicates if the component is using a wrapper div or rendering at root level
@@ -302,9 +346,9 @@ function NavigationComponent() {
 ```
 
 > **Limitation:**  
-> This component library is intended for use on the root viewport and requires the ReactDOM root to be document.body
+> This component library is intended for use on the root viewport and requires the ReactDOM root to be `document.body`.
 >
->The FullViewSnap component should be rendered as direct child of Body
+> Do not wrap `<Controller>` or individual `<FullView>` slides in extra HTML elements when snap is active.
 
 ## License
 

@@ -8,9 +8,16 @@ import { FullViewSnapContext } from "./FullViewSnap";
 interface RootScrollerProps {
   children: React.ReactNode;
   hideScrollBars?: boolean;
+  enabled?: boolean;
 }
 
-const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = false }) => {
+const RootScroller: React.FC<RootScrollerProps> = ({
+  children,
+  hideScrollBars = false,
+  enabled = true,
+}) => {
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
   const viewportMaxHeightRef = useRef<HTMLDivElement>(null);
   const viewportMinHeightRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +59,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
       }
       if(duration !== -1) {
         suspendScrollSnapTimeoutRef.current = setTimeout(() => {
+          if (!enabledRef.current) return;
           if(fixedScrollerRef.current) {
             fixedScrollerRef.current.classList.add("FVS-snap-y", "FVS-snap-mandatory");
           }else{
@@ -64,6 +72,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
 
   // Hydration effect to ensure the component is ready for interaction
   const instateScrollSnap = useCallback(() => {
+      if (!enabledRef.current) return;
       document.documentElement.classList.add("FVS-snap-y", "FVS-snap-mandatory");
       if(fixedScrollerRef.current) {
         fixedScrollerRef.current.classList.add("FVS-snap-y", "FVS-snap-mandatory");
@@ -132,24 +141,32 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
 
   useEffect(() => {
     rootScrollerRef.current = document.documentElement;
-    if(isFixedViewport){
-      rootScrollerRef.current.classList.remove("FVS-snap-y", "FVS-snap-mandatory");
-      rootScrollerRef.current = fixedScrollerRef.current; // Set to the root document scroll element
-    }else{// Set to the root document scroll element
-      rootScrollerRef.current.classList.add("FVS-snap-y", "FVS-snap-mandatory");
-      rootScrollerRef.current.style.overflow = "hidden"; // Temporarily disable scrolling
+    const snapClasses = ["FVS-snap-y", "FVS-snap-mandatory"] as const;
+
+    if (isFixedViewport) {
+      document.documentElement.classList.remove(...snapClasses);
+      rootScrollerRef.current = fixedScrollerRef.current;
+    } else if (enabled) {
+      document.documentElement.classList.add(...snapClasses);
+      rootScrollerRef.current.style.overflow = "hidden";
       setTimeout(() => {
-        rootScrollerRef.current.style.overflow = "auto"; // Temporarily disable scrolling
-      }, 500); // Delay to ensure Safari recalculates layout
+        rootScrollerRef.current.style.overflow = "auto";
+      }, 500);
+    } else {
+      document.documentElement.classList.remove(...snapClasses);
     }
-    
+
+    if (!enabled) {
+      fixedScrollerRef.current?.classList.remove(...snapClasses);
+    }
+
     // Apply scroll bar hiding to document element when not using fixed viewport
     if (!isFixedViewport && hideScrollBars) {
       document.documentElement.classList.add("FVS-no-scrollbar");
     } else if (!isFixedViewport && !hideScrollBars) {
       document.documentElement.classList.remove("FVS-no-scrollbar");
     }
-    
+
     // Apply scroll bar hiding to fixed scroller when using fixed viewport
     if (isFixedViewport && fixedScrollerRef.current) {
       if (hideScrollBars) {
@@ -158,7 +175,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
         fixedScrollerRef.current.classList.remove("FVS-no-scrollbar");
       }
     }
-  }, [isFixedViewport, hideScrollBars]);
+  }, [isFixedViewport, hideScrollBars, enabled]);
 
   // Load FullViewSnapContext
   const { updateContextState, contextState } = useContext(FullViewSnapContext);
@@ -169,6 +186,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
       ...contextState,
       rootScrollerContext: {
         rootScrollerRef,
+        enabled,
         setSlideRefs,
         scrollToView,
         isFixedViewport,
@@ -181,6 +199,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
     setSlideRefs,
     scrollToView,
     isFixedViewport,
+    enabled,
     suspendScrollSnap,
     instateScrollSnap,
   ]);
@@ -189,6 +208,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
     <RootScrollerContext.Provider
       value={{
         rootScrollerRef: rootScrollerRef,
+        enabled,
         setSlideRefs: setSlideRefs,
         scrollToView: scrollToView,
         isFixedViewport: isFixedViewport,
@@ -225,7 +245,11 @@ const RootScroller: React.FC<RootScrollerProps> = ({ children, hideScrollBars = 
           <>
             <div
               ref={fixedScrollerRef as React.RefObject<HTMLDivElement>}
-              className={`FVS-overflow-x-hidden FVS-overflow-y-scroll FVS-h-[100dvh] FVS-snap-y FVS-snap-mandatory FVS-w-screen ${hideScrollBars ? 'FVS-no-scrollbar' : ''}`}
+              className={
+                enabled
+                  ? `FVS-overflow-x-hidden FVS-overflow-y-scroll FVS-h-[100dvh] FVS-snap-y FVS-snap-mandatory FVS-w-screen ${hideScrollBars ? "FVS-no-scrollbar" : ""}`
+                  : `FVS-overflow-x-hidden FVS-overflow-y-scroll ${hideScrollBars ? "FVS-no-scrollbar" : ""}`
+              }
             >
               <div id={"FVS-fixed-viewport-wrapper"} className="FVS-relative">{children}</div>
             </div>
