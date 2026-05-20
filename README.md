@@ -31,6 +31,10 @@ You can view a live demo [here](https://dgan8ja2q09by.cloudfront.net/vite).
 - [`examples/vite/src`](./examples/vite/src) — Vite demo (includes an **Enable Toggle** route at `/enable-toggle` that toggles the `enabled` prop at runtime)
 - [`examples/next/src`](./examples/next/src) — Next.js demo
 
+## Cross-browser testing
+
+Selenium smoke tests run on the [TestMu AI / LambdaTest](https://www.lambdatest.com/) Automation grid. By default, desktop virtual browsers match the free Automation tier; mobile README targets need a paid real-device plan. See [`tests/README.md`](./tests/README.md).
+
 ## Installation
 
 To install the package, run:

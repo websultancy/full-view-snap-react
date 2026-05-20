@@ -1,0 +1,24 @@
+{
+  "name": "full-view-snap-react-selenium-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Cross-browser Selenium smoke tests on LambdaTest for README-supported browsers",
+  "type": "commonjs",
+  "scripts": {
+    "test": "mocha 'specs/**/*.test.js' --timeout 120000 --jobs 1",
+    "test:desktop": "LT_BROWSERS=safari-desktop,edge-desktop,firefox-desktop,chrome-desktop npm test",
+    "test:mobile": "LT_INCLUDE_MOBILE=true LT_BROWSERS=samsung-android,ios-safari,chrome-ios,firefox-ios,chrome-android,firefox-android npm test",
+    "test:all-profiles": "LT_INCLUDE_MOBILE=true npm test",
+    "test:browser": "node scripts/run-single-browser.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "selenium-webdriver": "^4.27.0"
+  },
+  "devDependencies": {
+    "mocha": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

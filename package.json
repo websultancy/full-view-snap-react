@@ -15,7 +15,8 @@
     "watch": "tsup --watch",
     "dev": "tsup --watch",
     "yalc:push": "yalc push",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "npm test --prefix tests",
+    "test:selenium": "npm test --prefix tests"
   },
   "keywords": [
     "react",
