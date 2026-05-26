@@ -16,20 +16,22 @@ ul{
   font-size: 1rem;
   z-index: 2000;
   color: rgb(var(--link-rgb));
-  background: rgba(0,0,0,0.02);
+  background: rgba(0, 0, 0, 0.20);
   padding: 4px 10px;
   border-radius: 8px;
   user-select: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .built-by-footer {
+    background: rgba(255, 255, 255, 0.20);
+  }
 }
 
 .websultancy-logo {
   width: 80px;
   height: auto;
   margin-left: 8px;
-  display: inline-block;
+  display: block;
   vertical-align: middle;
-}
-
-.built-by-footer .websultancy-logo path {
-  fill: rgb(var(--link-rgb)) !important;
 }

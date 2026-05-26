@@ -98,6 +98,10 @@ h1 {
   text-align: center;
 }
 
+.central-central svg path {
+  fill: var(--logo-color) !important;
+}
+
 /* Define a fixed class thats 100lvh (fallbacks to 100vh)  that contains stats that are cebtered horizontally and vertically */
 .full-view-animation {
   position: fixed;
@@ -135,4 +139,33 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto rgb(var(--link-hover-rgb), 0.5);
+}
+
+.built-by-footer {
+  position: fixed;
+  right: 24px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  z-index: 2000;
+  color: rgb(var(--link-rgb));
+  background: rgba(0, 0, 0, 0.20);
+  padding: 4px 10px;
+  border-radius: 8px;
+  user-select: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .built-by-footer {
+    background: rgba(255, 255, 255, 0.20);
+  }
+}
+
+.websultancy-logo {
+  width: 80px;
+  height: auto;
+  margin-left: 8px;
+  display: block;
+  vertical-align: middle;
 }

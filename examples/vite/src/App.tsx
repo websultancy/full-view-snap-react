@@ -7,7 +7,8 @@ import DynamicSlideCount from './DynamicSlideCount';
 import EnableToggle from './EnableToggle';
 import './app.css';
 import FullViewSnapLogo from './assets/fullviewsnaplogo.svg?react'; // Import as React component
-import WebsultancyLogo from './assets/websultancy_logo.svg?react'; // Import websultancy logo
+import websultancyLogoLight from './assets/websultancy-logo-light.png';
+import websultancyLogoDark from './assets/websultancy-logo-dark.png';
 import ScrollToTop from "./components/ScrollToTop";
 
 const mobileNavStyles = `
@@ -115,7 +116,17 @@ function BuiltByFooter() {
         style={{ display: 'inline-flex', alignItems: 'center' }}
         aria-label="Websultancy website"
       >
-        <WebsultancyLogo className="websultancy-logo" />
+        <picture>
+          <source
+            srcSet={websultancyLogoDark}
+            media="(prefers-color-scheme: dark)"
+          />
+          <img
+            src={websultancyLogoLight}
+            alt="Websultancy"
+            className="websultancy-logo"
+          />
+        </picture>
       </a>
     </div>
   );
