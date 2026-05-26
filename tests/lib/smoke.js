@@ -5,8 +5,14 @@ const { DEMO_URL } = require('../config/lambdatest');
 const CURRENT_VIEW_VALUE_XPATH =
   "//div[contains(@class,'full-view-stat-title') and normalize-space()='currentView']/following-sibling::div[contains(@class,'full-view-stat-value')][1]";
 
-const WHEEL_DELTA_PER_TICK = 400;
-const SNAP_SETTLE_MS = 400;
+/** Per wheel event — close to typical browser wheel deltaY (~100–120). */
+const WHEEL_TICK_DELTA = 120;
+/** Rapid ticks per gesture, chained in one W3C perform(). */
+const WHEEL_TICKS_PER_GESTURE = 24;
+/** Pause between ticks inside a gesture (ms). ~16 ≈ one frame. */
+const WHEEL_TICK_PAUSE_MS = 6;
+/** Brief pause after a gesture before re-checking currentView. */
+const GESTURE_SETTLE_MS = 200;
 const VIEW_CHANGE_TIMEOUT_MS = 15_000;
 
 /**
@@ -22,15 +28,22 @@ async function getCurrentView(driver) {
 }
 
 /**
- * W3C wheel action — vertical delta on the viewport (WebDriver wheel input).
+ * One continuous wheel gesture: many small deltaY ticks in quick succession.
  * @param {import('selenium-webdriver').WebDriver} driver
- * @param {number} deltaY Positive = down, negative = up
+ * @param {1 | -1} direction Positive = down, negative = up
  */
-async function wheelScrollVertical(driver, deltaY) {
-  await driver
-    .actions({ bridge: true })
-    .scroll(0, 0, 0, deltaY)
-    .perform();
+async function wheelGestureBurst(driver, direction) {
+  const tickDelta = direction * WHEEL_TICK_DELTA;
+  let actions = driver.actions({ bridge: true });
+
+  for (let i = 0; i < WHEEL_TICKS_PER_GESTURE; i++) {
+    if (i > 0) {
+      actions = actions.pause(WHEEL_TICK_PAUSE_MS);
+    }
+    actions = actions.scroll(0, 0, 0, tickDelta);
+  }
+
+  await actions.perform();
 }
 
 /**
@@ -44,10 +57,9 @@ async function wheelUntilCurrentView(driver, targetView) {
     const current = await getCurrentView(driver);
     if (current === targetView) return;
 
-    const deltaY =
-      current < targetView ? WHEEL_DELTA_PER_TICK : -WHEEL_DELTA_PER_TICK;
-    await wheelScrollVertical(driver, deltaY);
-    await driver.sleep(SNAP_SETTLE_MS);
+    const direction = current < targetView ? 1 : -1;
+    await wheelGestureBurst(driver, direction);
+    await driver.sleep(GESTURE_SETTLE_MS);
   }
 
   const final = await getCurrentView(driver);
@@ -57,17 +69,32 @@ async function wheelUntilCurrentView(driver, targetView) {
 }
 
 /**
- * Smoke test for the Vite "basic" demo: load, wheel-scroll, snap index updates.
+ * Home → Basic (React Router link text), then wait for the stats overlay.
  * @param {import('selenium-webdriver').WebDriver} driver
  */
-async function runSmokeTest(driver) {
+async function openBasicDemo(driver) {
   await driver.get(DEMO_URL);
+
+  const basicLink = await driver.wait(
+    until.elementLocated(By.linkText('Basic')),
+    30_000,
+  );
+  await driver.wait(until.elementIsVisible(basicLink), 10_000);
+  await basicLink.click();
 
   const stats = await driver.wait(
     until.elementLocated(By.css('.full-view-stats')),
     30_000,
   );
   await driver.wait(until.elementIsVisible(stats), 10_000);
+}
+
+/**
+ * Smoke test for the Vite "basic" demo: load home, open Basic, wheel-scroll.
+ * @param {import('selenium-webdriver').WebDriver} driver
+ */
+async function runSmokeTest(driver) {
+  await openBasicDemo(driver);
 
   const initialView = await getCurrentView(driver);
   if (initialView !== 0) {
@@ -83,4 +110,9 @@ async function runSmokeTest(driver) {
   await wheelUntilCurrentView(driver, 0);
 }
 
-module.exports = { runSmokeTest, getCurrentView, wheelScrollVertical };
+module.exports = {
+  runSmokeTest,
+  openBasicDemo,
+  getCurrentView,
+  wheelGestureBurst,
+};

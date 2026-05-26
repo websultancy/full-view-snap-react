@@ -86,16 +86,16 @@ npm run test:mobile
 
 ## Local demo + tunnel
 
-1. Start Vite: `yarn dev` in `examples/vite` → `http://localhost:5173/vite/basic`
+1. Start Vite: `yarn dev` in `examples/vite` → `http://localhost:5173/vite/`
 2. Start TestMu tunnel (same credentials as `.env`)
-3. Set `LT_DEMO_URL=http://localhost:5173/vite/basic`
+3. Set `LT_DEMO_URL=http://localhost:5173/vite/` (app root; test opens Basic via link)
 4. Set `LT_TUNNEL_NAME` in `.env` to the tunnel name from the CLI (see `.env.example`)
 
 When `LT_TUNNEL_NAME` is set, [`config/lambdatest.js`](./config/lambdatest.js) passes `tunnel: true` and `tunnelName` in `LT:Options` for all profiles.
 
 ## What is tested
 
-`LT_DEMO_URL` should point at the **basic** demo (e.g. `…/vite/basic`). [`lib/smoke.js`](./lib/smoke.js) loads the page, checks `currentView === 0`, sends **vertical wheel** input via WebDriver (`actions().scroll` Δy), waits for snap to views `1` and `2`, then wheels back up to `0`. No route navigation or touch swipes.
+`LT_DEMO_URL` should be the **Vite app root** (e.g. `…/vite/`). [`lib/smoke.js`](./lib/smoke.js) loads the home page, clicks the **Basic** link (`By.linkText('Basic')`), then checks `currentView === 0`, and simulates a **wheel gesture** (many small `deltaY` ticks chained in one W3C action with ~16ms between ticks), waits for snap to views `1` and `2`, and wheels back up to `0`.
 
 ## Project layout
 
