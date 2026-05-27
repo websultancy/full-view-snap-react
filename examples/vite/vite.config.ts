@@ -4,31 +4,41 @@ import svgr from "vite-plugin-svgr";
 import path from 'path';
 console.log(path.resolve(__dirname, '../../src'));
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react(), svgr()],
-  resolve: {
-    alias: {
-      'full-view-snap-react': path.resolve(__dirname, '.yalc/full-view-snap-react'),
-    },
-  },
-  server: {
-    host: true, // This exposes the dev server on your local network IP
-    watch: {
-      // Watch for changes in the yalc package
-      ignored: ['!**/.yalc/full-view-snap-react/**'],
-    },
-    fs: {
-      // Allow serving files from the yalc package
-      allow: ['..'],
-    },
-  },
-  optimizeDeps: {
-    // Force Vite to re-bundle the yalc package when it changes
-    include: ['full-view-snap-react'],
-  },
+  resolve:
+    command === 'serve'
+      ? {
+          alias: {
+            // In dev, use the yalc-linked build so you can iterate quickly.
+            'full-view-snap-react': path.resolve(__dirname, '.yalc/full-view-snap-react'),
+          },
+        }
+      : undefined,
+  server:
+    command === 'serve'
+      ? {
+          host: true, // This exposes the dev server on your local network IP
+          watch: {
+            // Watch for changes in the yalc package
+            ignored: ['!**/.yalc/full-view-snap-react/**'],
+          },
+          fs: {
+            // Allow serving files from the yalc package
+            allow: ['..'],
+          },
+        }
+      : undefined,
+  optimizeDeps:
+    command === 'serve'
+      ? {
+          // Force Vite to re-bundle the yalc package when it changes
+          include: ['full-view-snap-react'],
+        }
+      : undefined,
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
   },
   base: '/vite/', // <-- Set this if your app is served from /vite/
-})
+}))
