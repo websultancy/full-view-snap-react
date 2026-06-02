@@ -44,6 +44,7 @@ const RootScroller: React.FC<RootScrollerProps> = ({
 
   // Ref for suspendScrollSnap timeout
   const suspendScrollSnapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overflowRestoreTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Create a callback function to suspend scroll snapping for a specified duration
   const suspendScrollSnap = useCallback((duration: number = 1000) => {
@@ -134,26 +135,38 @@ const RootScroller: React.FC<RootScrollerProps> = ({
   // Cleanup effect to remove classes on unmount
   useEffect(() => {
     return () => {
+      if (overflowRestoreTimeoutRef.current) {
+        clearTimeout(overflowRestoreTimeoutRef.current);
+        overflowRestoreTimeoutRef.current = null;
+      }
       document.documentElement.classList.remove("FVS-snap-y", "FVS-snap-mandatory", "FVS-no-scrollbar");
       document.documentElement.style.overflow = ""; // Reset overflow style
     };
   }, []);
 
   useEffect(() => {
+    if (overflowRestoreTimeoutRef.current) {
+      clearTimeout(overflowRestoreTimeoutRef.current);
+      overflowRestoreTimeoutRef.current = null;
+    }
+
     rootScrollerRef.current = document.documentElement;
     const snapClasses = ["FVS-snap-y", "FVS-snap-mandatory"] as const;
 
     if (isFixedViewport) {
       document.documentElement.classList.remove(...snapClasses);
+      document.documentElement.style.overflow = "";
       rootScrollerRef.current = fixedScrollerRef.current;
     } else if (enabled) {
       document.documentElement.classList.add(...snapClasses);
-      rootScrollerRef.current.style.overflow = "hidden";
-      setTimeout(() => {
+      overflowRestoreTimeoutRef.current = setTimeout(() => {
+        // Guard against stale timeouts when enabled/fixed state changes.
+        if (!enabledRef.current || isFixedViewport) return;
         rootScrollerRef.current.style.overflow = "auto";
       }, 500);
     } else {
       document.documentElement.classList.remove(...snapClasses);
+      document.documentElement.style.overflow = "auto";
     }
 
     if (!enabled) {
