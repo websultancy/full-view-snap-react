@@ -1,6 +1,6 @@
 {
   "name": "full-view-snap-react",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A React component for viewport vertical scroll snapping with integrated navigation.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/websultancy/full-view-snap-react.git"
   },
-  "homepage": "https://github.com/websultancy/full-view-snap-react#readme",
+  "homepage": "https://full-view-snap.websultancy.com/",
   "scripts": {
     "build": "tsup && yarn copy-css",
     "copy-css": "cp src/index.css dist/index.css",
