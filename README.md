@@ -2,6 +2,8 @@
 
 A React native root viewport scroll wrapper component for css scroll snapping with integrated navigation and reusable UI components.
 
+**Official website:** [full-view-snap.websultancy.com](https://full-view-snap.websultancy.com/)
+
 ## Why full-view-snap-react?
 
 Unlike many JavaScript-based scroll snap plugins that attempt to recreate or unify scrolling behavior, **full-view-snap-react** is an optimized, cross-platform tested wrapper that leverages native CSS scroll snapping. This approach allows modern browsers (especially through touch gestures) to deliver the smoothest and most performant scrolling experience possible.
@@ -24,12 +26,12 @@ The **full-view-snap-react** component intelligently adapts its rendering strate
 
 ## Live Demo
 
-You can view a live demo [here](https://dgan8ja2q09by.cloudfront.net/vite).
+Interactive demos and documentation are available on the [official website](https://full-view-snap.websultancy.com/#examples).
 
 ## Examples
 
-- [`examples/vite/src`](./examples/vite/src) — Vite demo (includes an **Enable Toggle** route at `/enable-toggle` that toggles the `enabled` prop at runtime)
-- [`examples/next/src`](./examples/next/src) — Next.js demo
+- [Interactive demos](https://full-view-snap.websultancy.com/#examples) — Basic, Animated, Navigation, Sticky overlays, Dynamic slide count, and **Enable Toggle** (toggles the `enabled` prop at runtime)
+- [`examples/vite/src`](./examples/vite/src) and [`examples/next/src`](./examples/next/src) — Vite and Next.js source
 
 ## Installation
 
@@ -144,7 +146,7 @@ const App = () => {
 };
 ```
 
-See [`examples/vite/src/EnableToggle.tsx`](./examples/vite/src/EnableToggle.tsx) for a full demo.
+See the [Enable Toggle demo](https://full-view-snap.websultancy.com/#examples) on the official website, or [`examples/vite/src/EnableToggle.tsx`](./examples/vite/src/EnableToggle.tsx) for the source.
 
 ### AbsoluteView
 
